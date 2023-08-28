@@ -1,15 +1,17 @@
 import icons from 'url:../../img/icons.svg';
 import { Fraction } from 'fractional';
-console.log(Fraction);
+
 
 export class RecipeView {
     #parentEl = document.querySelector('.recipe');
     #data;
+    #ErrorMsg = 'We could not find that recipe. Please try another one!';
+    #message = '';
     render(data) {
         this.#data = data;
         const markup = this._generateMarkup();
         this.#clear();
-        this.#parentEl.innerHTML = "";
+        // this.#parentEl.innerHTML = "";
         this.#parentEl.insertAdjacentHTML('afterbegin', markup);
     }
 
@@ -25,16 +27,43 @@ export class RecipeView {
                 </svg>
               </div>
         `
-        this.#parentEl.innerHTML = '';
+        this.#clear();
         this.#parentEl.insertAdjacentHTML('afterbegin', markup);
     }
-
+    renderError(msg = this.#ErrorMsg) {
+        const markup = `
+        <div class="error">
+            <div>
+              <svg>
+                <use href="${icons}#icon-smile"></use>
+              </svg>
+            </div>
+            <p>${msg}</p>
+          </div>
+          `;
+        this.#clear();
+        this.#parentEl.insertAdjacentHTML('afterbegin', markup);
+    }
+    renderMessage(msg = this.#message) {
+        const markup = `
+        <div class="error">
+            <div>
+              <svg>
+                <use href="${icons}#icon-alert-triangle"></use>
+              </svg>
+            </div>
+            <p>${msg}</p>
+          </div>
+          `;
+        this.#clear();
+        this.#parentEl.insertAdjacentHTML('afterbegin', markup);
+    }
     addHandlerRender(handler) {
         window.addEventListener('hashchange', handler);
         window.addEventListener('load', handler);
     }
     _generateMarkup() {
-        console.log(this.#data);
+        // console.log(this.#data);
         return `
             <figure class="recipe__fig">
                 <img src="${this.#data.image}" alt="Tomato" class="recipe__img" />
