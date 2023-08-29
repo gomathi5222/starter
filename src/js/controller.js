@@ -34,19 +34,25 @@ const controlRecipes = async function () {
     recipeView.renderError();
   }
 }
-const init = function () {
-  recipeView.addHandlerRender(controlRecipes);
-}
-init();
+
 
 const controlSearchResults = async function () {
   try {
+    // 1) Get search Query
     const query = searchView.getQuery();
     if (!query) return;
+    // 2) load search results
     await model.loadSearchResults(query)
+    // 3) rendering results
     console.log(model.state.search.results);
   } catch (err) {
     console.log(err);
   }
 }
 controlSearchResults();
+
+const init = function () {
+  recipeView.addHandlerRender(controlRecipes);
+  searchView.addHandlerSearch(controlSearchResults);
+}
+init();
