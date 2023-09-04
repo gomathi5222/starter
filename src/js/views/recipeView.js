@@ -12,6 +12,14 @@ export class RecipeView extends View {
         window.addEventListener('hashchange', handler);
         window.addEventListener('load', handler);
     }
+    addHandlerUpdateServings(handler) {
+        this._parentEl.addEventListener('click', function (e) {
+            const btn = e.target.closest('.btn--tiny');
+            if (!btn) return;
+            console.log(btn);
+            handler();
+        });
+    }
     _generateMarkup() {
         // console.log(this._data);
         return `
@@ -93,6 +101,7 @@ export class RecipeView extends View {
             <use href="${icons}#icon-check"></use>
         </svg>
         <div class="recipe__quantity">${ing.quantity ? new Fraction(ing.quantity).toString() : ''}</div>
+    
         <div class="recipe__description">
             <span class="recipe__unit">${ing.unit}</span>
             ${ing.description}
@@ -101,5 +110,5 @@ export class RecipeView extends View {
         `
     }
 }
-
 export default new RecipeView();
+

@@ -56,9 +56,19 @@ export const loadSearchResults = async function (query) {
 }
 // loadSearchResults('pizza');
 
-export const getSearchResultsPage = function (page  = state.search.page) {
-    state.search.page=page;
+export const getSearchResultsPage = function (page = state.search.page) {
+    state.search.page = page;
     const start = (page - 1) * state.search.resultsPerPage;//0;
     const end = (page * state.search.resultsPerPage)//9;
     return state.search.results.slice(start, end);
+}
+
+export const updateServings = function (newServings) {
+    state.recipe.ingredients.forEach(ing => {
+
+        ing.quantiy = (ing.quantiy * newServings) / state.recipe.servings;
+        console.log(ing.quantiy);
+        return ing.quantiy;
+    });
+    state.recipe.servings = newServings;
 }
