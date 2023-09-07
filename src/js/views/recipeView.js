@@ -14,10 +14,12 @@ export class RecipeView extends View {
     }
     addHandlerUpdateServings(handler) {
         this._parentEl.addEventListener('click', function (e) {
-            const btn = e.target.closest('.btn--tiny');
+            const btn = e.target.closest('.btn--update-servings');
             if (!btn) return;
             console.log(btn);
-            handler();
+            const { updateTo } = btn.dataset;
+            if (+updateTo > 0) handler(+updateTo);
+            console.log(+updateTo);
         });
     }
     _generateMarkup() {
@@ -46,19 +48,22 @@ export class RecipeView extends View {
                 <span class="recipe__info-text">servings</span>
 
                 <div class="recipe__info-buttons">
-                    <button class="btn--tiny btn--increase-servings">
-                    <svg>
-                        <use href="${icons}#icon-minus-circle"></use>
-                    </svg>
-                    </button>
-                    <button class="btn--tiny btn--increase-servings">
-                    <svg>
-                        <use href="${icons}#icon-plus-circle"></use>
-                    </svg>
-                    </button>
-                </div>
-                </div>
-
+                <button class="btn--tiny btn--update-servings" data-update-to="${
+                  this._data.servings - 1
+                }">
+                  <svg>
+                    <use href="${icons}#icon-minus-circle"></use>
+                  </svg>
+                </button>
+                <button class="btn--tiny btn--update-servings" data-update-to="${
+                  this._data.servings + 1
+                }">
+                  <svg>
+                    <use href="${icons}#icon-plus-circle"></use>
+                  </svg>
+                </button>
+              </div>
+            </div>
                 <div class="recipe__user-generated">
                
                 </div>
@@ -94,13 +99,14 @@ export class RecipeView extends View {
             </div>
             `;
     }
+    // new Fraction(ing.quantity).toString() 
     _generateIng(ing) {
         return `
         <li class="recipe__ingredient">
         <svg class="recipe__icon">
             <use href="${icons}#icon-check"></use>
         </svg>
-        <div class="recipe__quantity">${ing.quantity ? new Fraction(ing.quantity).toString() : ''}</div>
+        <div class="recipe__quantity">${ing.quantity ? ing.quantity : ''}</div>
     
         <div class="recipe__description">
             <span class="recipe__unit">${ing.unit}</span>
