@@ -86,4 +86,4 @@ const init = function () {
   paginationView.addHandlerClick(controlPagination);
 
 }
-init();
+init();   
