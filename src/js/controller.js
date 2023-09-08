@@ -27,7 +27,8 @@ const controlRecipes = async function () {
   try {
     recipeView.renderSpinner();
     const id = window.location.hash.slice(1);
-    // console.log(id);
+    // update search result view to selected search results 
+    resultsView.update(model.getSearchResultsPage());
     // 1) Loading recipe
     await model.loadRecipe(id);
     // 2) Rendering Recipe
@@ -54,7 +55,7 @@ const controlSearchResults = async function () {
     // 2) load search results
     await model.loadSearchResults(query)
     // 3) rendering results
-    resultsView.render(model.getSearchResultsPage(3));
+    resultsView.render(model.getSearchResultsPage());
 
     // 4) The initial pagination results
     paginationView.render(model.state.search)
@@ -86,4 +87,4 @@ const init = function () {
   paginationView.addHandlerClick(controlPagination);
 
 }
-init();   
+init();

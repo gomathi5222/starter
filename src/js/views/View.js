@@ -9,7 +9,7 @@ export default class View {
     this._parentEl.insertAdjacentHTML('afterbegin', markup);
   }
   update(data) {
-    if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
+    // if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
     this._data = data;
     const Newmarkup = this._generateMarkup();
     const newDOM = document.createRange().createContextualFragment(Newmarkup);
@@ -20,12 +20,16 @@ export default class View {
     newElements.forEach((newEl, i) => {
       const curEl = curElements[i];
       console.log(newEl, newEl.isEqualNode(curEl));
+      // updated changed TEXT
       if (
         !newEl.isEqualNode(curEl) &&
         newEl.firstChild?.nodeValue.trim() !== '') {
         // console.log('💥💥', +newEl.firstChild?.nodeValue.trim());
         curEl.textContent = newEl.textContent;
       }
+      // update changed ATTRIBUTES 
+      if (!newEl.isEqualNode(curEl))
+        Array.from(newEl.attributes).forEach((attr) => curEl.setAttribute(attr.name, attr.value))
     });
   }
   _clear() {
