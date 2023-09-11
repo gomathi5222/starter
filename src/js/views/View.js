@@ -15,11 +15,11 @@ export default class View {
     const newDOM = document.createRange().createContextualFragment(Newmarkup);
     const newElements = newDOM.querySelectorAll('*');
     const curElements = this._parentEl.querySelectorAll('*');
-    console.log(curElements);
-    console.log(newElements);
+    // console.log(curElements);
+    // console.log(newElements);
     newElements.forEach((newEl, i) => {
       const curEl = curElements[i];
-      console.log(newEl, newEl.isEqualNode(curEl));
+      // console.log(newEl, newEl.isEqualNode(curEl));
       // updated changed TEXT
       if (
         !newEl.isEqualNode(curEl) &&
