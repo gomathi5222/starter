@@ -27,7 +27,7 @@ const controlRecipes = async function () {
   try {
     recipeView.renderSpinner();
     const id = window.location.hash.slice(1);
-    // update search result view to selected search results 
+    // update search result view to selected search results
     resultsView.update(model.getSearchResultsPage());
     // 1) Loading recipe
     await model.loadRecipe(id);
@@ -41,9 +41,7 @@ const controlRecipes = async function () {
     // ${err}💥💥💥
     recipeView.renderError();
   }
-
-}
-
+};
 
 const controlSearchResults = async function () {
   try {
@@ -53,24 +51,24 @@ const controlSearchResults = async function () {
     const query = searchView.getQuery();
     if (!query) return;
     // 2) load search results
-    await model.loadSearchResults(query)
+    await model.loadSearchResults(query);
     // 3) rendering results
     resultsView.render(model.getSearchResultsPage());
 
     // 4) The initial pagination results
-    paginationView.render(model.state.search)
+    paginationView.render(model.state.search);
   } catch (err) {
     console.log(err);
   }
-}
+};
 controlSearchResults();
 const controlPagination = function (goToPage) {
   // 1) rendering new results
   resultsView.render(model.getSearchResultsPage(goToPage));
 
   // 2) The initial new pagination results
-  paginationView.render(model.state.search)
-}
+  paginationView.render(model.state.search);
+};
 
 const controlServings = function (newServings) {
   // update the recipe servings (in state)
@@ -79,19 +77,23 @@ const controlServings = function (newServings) {
   // update the recipe view
   recipeView.update(model.state.recipe);
   console.log(model.state.recipe);
-}
+};
 
 const controlAddBookmark = function () {
-  model.addBookmark(model.state.recipe);
+  // model.addBookmark(model.state.recipe);
+  // console.log(model.state.recipe.bookmark);
+  if (!model.state.recipe.bookmark) model.addBookmark(model.state.recipe);
+  else model.deleteBookmark(model.state.recipe.id);
+
   console.log(model.state.recipe);
-  recipeView.update(model.state.recipe)
-}
+  recipeView.update(model.state.recipe);
+ 
+};
 const init = function () {
   recipeView.addHandlerRender(controlRecipes);
   recipeView.addHandlerUpdateServings(controlServings);
   recipeView.addHandlerAddBookmark(controlAddBookmark);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
-
-}
+};
 init();
