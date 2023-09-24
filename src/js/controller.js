@@ -33,13 +33,13 @@ const controlRecipes = async function () {
     const id = window.location.hash.slice(1);
     // update search result view to selected search results
     resultsView.update(model.getSearchResultsPage());
+    bookmarkView.update(model.state.bookmark);
     // 1) Loading recipe
     await model.loadRecipe(id);
     // 2) Rendering Recipe
     recipeView.render(model.state.recipe);
     // 3)updating bookmark View
     // debugger;
-    bookmarkView.update(model.state.bookmark);
     console.log(model.state.recipe);
     // test
     // controlServings();
@@ -110,6 +110,10 @@ const controlAddRecipe = async function (newRecipe) {
     recipeView.render(model.state.recipe);
     // success message
     addRecipeView.renderMessage();
+    bookmarkView.render(model.state.bookmark);
+
+    window.history.pushState(null, '', `#${model.state.recipe.id}`);
+    // Window.history.back();
     // close form window
     setTimeout(function () {
       addRecipeView.toggleWindow();
