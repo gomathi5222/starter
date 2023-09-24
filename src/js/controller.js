@@ -13,6 +13,7 @@ import 'regenerator-runtime/runtime';
 // }
 // const recipeContainer = document.querySelector('.recipe');
 // https://forkify-api.herokuapp.com/v2
+// 2a2fcd7f-0ea8-4052-b1c4-d92c8594a6a2
 ///////////////////////////////////////
 // console.log("test");
 // const renderSpinner = function (parentEl) {
@@ -88,12 +89,12 @@ const controlServings = function (newServings) {
 
 const controlAddBookmark = function () {
   //  1)Render bookmarks view
+  bookmarkView.render(model.state.bookmark);
   // 2) Add/remove bookmarks
   if (!model.state.recipe.bookmark) model.addBookmark(model.state.recipe);
   else model.deleteBookmark(model.state.recipe.id);
   // 3) Update the bookmarks view
   recipeView.update(model.state.recipe);
-  bookmarkView.render(model.state.bookmark);
 };
 const controlBookmark = function () {
   bookmarkView.render(model.state.bookmark);
@@ -101,6 +102,7 @@ const controlBookmark = function () {
 const controlAddRecipe = async function (newRecipe) {
   try {
     await model.uploadRecipe(newRecipe);
+    console.log(model.state.recipe);
   } catch (err) {
     console.error(`${err} 💥💥`);
     addRecipeView.renderError(err.message);

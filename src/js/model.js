@@ -1,7 +1,7 @@
 // import { async } from "regenerator-runtime";
 import { async } from 'regenerator-runtime';
-import { API_URL, RES_PER_PAGE } from './config.js';
-import { getJSON } from './helpers.js';
+import { API_URL, RES_PER_PAGE, KEY } from './config.js';
+import { getJSON, sendJSON } from './helpers.js';
 export const state = {
   recipe: {},
   search: {
@@ -12,21 +12,24 @@ export const state = {
   },
   bookmark: [],
 };
-
+const createRecipeObject = function (data) {
+  const { recipe } = data.data;
+  return {
+    id: recipe.id,
+    title: recipe.title,
+    publisher: recipe.publisher,
+    sourceUrl: recipe.source_url,
+    image: recipe.image_url,
+    servings: recipe.servings,
+    cookingTime: recipe.cooking_time,
+    ingredients: recipe.ingredients,
+  };
+};
 export const loadRecipe = async function (id) {
   try {
     const data = await getJSON(`${API_URL}${id}`);
     const { recipe } = data.data;
-    state.recipe = {
-      id: recipe.id,
-      title: recipe.title,
-      publisher: recipe.publisher,
-      sourceUrl: recipe.source_url,
-      image: recipe.image_url,
-      servings: recipe.servings,
-      cookingTime: recipe.cooking_time,
-      ingredients: recipe.ingredients,
-    };
+    state.recipe = createRecipeObject(data);
     if (state.bookmark.some(b => b.id === id)) {
       state.recipe.bookmark = true;
     } else {
@@ -115,7 +118,11 @@ export const uploadRecipe = async function (newRecipe) {
             'Wrong ingredient format.Please use the correct format :)'
           );
         const [quantity, units, description] = ingArr;
-        return { quantity: quantity ? +quantity : null, units, description };
+        return {
+          quantity: quantity ? +quantity : null,
+          units: units ? units : '',
+          description: description ? description : '',
+        };
       });
     const recipe = {
       title: newRecipe.title,
@@ -126,7 +133,8 @@ export const uploadRecipe = async function (newRecipe) {
       servings: +newRecipe.servings,
       ingredients,
     };
-    console.log(recipe);
+    const data = await sendJSON(`${API_URL}?key=${KEY}`, recipe);
+    state.recipe = createRecipeObject(data);
   } catch (err) {
     throw err;
   }
