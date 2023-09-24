@@ -5,6 +5,7 @@ import searchView from './views/searchView.js';
 import resultsView from './views/resultsView.js';
 import bookmarkView from './views/bookmarkView.js';
 import paginationView from './views/paginationView.js';
+import addRecipeView from './views/addRecipeView.js';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 // if (module.hot) {
@@ -97,6 +98,9 @@ const controlAddBookmark = function () {
 const controlBookmark = function () {
   bookmarkView.render(model.state.bookmark);
 };
+const controlAddRecipe = function(newRecipe){
+  console.log(newRecipe);
+}
 const init = function () {
   bookmarkView.addHandlerRender(controlBookmark);
   recipeView.addHandlerRender(controlRecipes);
@@ -104,5 +108,6 @@ const init = function () {
   recipeView.addHandlerAddBookmark(controlAddBookmark);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
+  addRecipeView._addhandlerUpload(controlAddRecipe)
 };
 init();
