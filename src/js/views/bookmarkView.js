@@ -2,11 +2,13 @@ import View from './View.js';
 import previewView from './previewView.js';
 import icons from 'url:../../img/icons.svg';
 
-class ResultView extends View {
-  _parentEl = document.querySelector('.results');
-  _ErrorMsg = 'No recipe found for your query! Please try again :)';
+class BookmarksView extends View {
+  _parentEl = document.querySelector('.bookmarks__list');
+  _ErrorMsg = 'No bookmark yet. Find a nice recipe and bookmark it :)';
   _message = '';
-
+  addHandlerRender(handler){
+    window.addEventListener('load',handler)
+  }
   _generateMarkup() {
     // console.log(this._data);
     return this._data
@@ -15,4 +17,4 @@ class ResultView extends View {
   }
 }
 
-export default new ResultView();
+export default new BookmarksView();

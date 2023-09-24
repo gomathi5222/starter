@@ -3,6 +3,7 @@ import * as model from './model.js';
 import recipeView from './views/recipeView.js';
 import searchView from './views/searchView.js';
 import resultsView from './views/resultsView.js';
+import bookmarkView from './views/bookmarkView.js';
 import paginationView from './views/paginationView.js';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
@@ -33,6 +34,9 @@ const controlRecipes = async function () {
     await model.loadRecipe(id);
     // 2) Rendering Recipe
     recipeView.render(model.state.recipe);
+    // 3)updating bookmark View
+    // debugger;
+    bookmarkView.update(model.state.bookmark);
     console.log(model.state.recipe);
     // test
     // controlServings();
@@ -40,6 +44,7 @@ const controlRecipes = async function () {
     // console.error(err);
     // ${err}💥💥💥
     recipeView.renderError();
+    console.error(err);
   }
 };
 
@@ -54,6 +59,7 @@ const controlSearchResults = async function () {
     await model.loadSearchResults(query);
     // 3) rendering results
     resultsView.render(model.getSearchResultsPage());
+    // bookmarkView.update(model.state.bookmark);
 
     // 4) The initial pagination results
     paginationView.render(model.state.search);
@@ -76,20 +82,23 @@ const controlServings = function (newServings) {
 
   // update the recipe view
   recipeView.update(model.state.recipe);
-  console.log(model.state.recipe);
+  // console.log(model.state.recipe);
 };
 
 const controlAddBookmark = function () {
-  // model.addBookmark(model.state.recipe);
-  // console.log(model.state.recipe.bookmark);
+  //  1)Render bookmarks view
+  // 2) Add/remove bookmarks
   if (!model.state.recipe.bookmark) model.addBookmark(model.state.recipe);
   else model.deleteBookmark(model.state.recipe.id);
-
-  console.log(model.state.recipe);
+  // 3) Update the bookmarks view
   recipeView.update(model.state.recipe);
- 
+  bookmarkView.render(model.state.bookmark);
+};
+const controlBookmark = function () {
+  bookmarkView.render(model.state.bookmark);
 };
 const init = function () {
+  bookmarkView.addHandlerRender(controlBookmark);
   recipeView.addHandlerRender(controlRecipes);
   recipeView.addHandlerUpdateServings(controlServings);
   recipeView.addHandlerAddBookmark(controlAddBookmark);
